@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monad Validator Profitability Calculator</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --accent: #836EF9;
+    --accent-dim: #836EF920;
+    --green: #22c55e;
+    --green-dim: #22c55e20;
+    --red: #ef4444;
+    --red-dim: #ef444420;
+    --yellow: #eab308;
+    --yellow-dim: #eab30820;
+    --text: #e4e4e7;
+    --text-dim: #71717a;
+    --text-mid: #a1a1aa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px;
+    line-height: 1.5;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    background: linear-gradient(135deg, #836EF9, #b794f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  header p { color: var(--text-dim); font-size: 14px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .card h2 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  .field { margin-bottom: 14px; }
+
+  .field label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+  }
+
+  .field label .hint {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .field input, .field select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .field input:focus, .field select:focus {
+    border-color: var(--accent);
+  }
+
+  .field input[type="range"] {
+    -webkit-appearance: none;
+    padding: 0;
+    height: 6px;
+    background: var(--surface2);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .field input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .range-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .range-row input[type="range"] { flex: 1; }
+
+  .range-val {
+    min-width: 50px;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .result-item {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .result-item.full { grid-column: 1 / -1; }
+
+  .result-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .result-value {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .result-sub {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .positive { color: var(--green); }
+  .negative { color: var(--red); }
+  .neutral { color: var(--accent); }
+  .warn { color: var(--yellow); }
+
+  .verdict-card {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .verdict-card.profitable {
+    background: var(--green-dim);
+    border: 1px solid var(--green);
+  }
+
+  .verdict-card.unprofitable {
+    background: var(--red-dim);
+    border: 1px solid var(--red);
+  }
+
+  .verdict-card.marginal {
+    background: var(--yellow-dim);
+    border: 1px solid var(--yellow);
+  }
+
+  .verdict-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .verdict-detail {
+    font-size: 13px;
+    color: var(--text-mid);
+  }
+
+  .breakdown-table {
+    width: 100%;
+    margin-top: 12px;
+    border-collapse: collapse;
+  }
+
+  .breakdown-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .breakdown-table tr:last-child { border: none; }
+
+  .breakdown-table td {
+    padding: 8px 0;
+    font-size: 13px;
+  }
+
+  .breakdown-table td:first-child { color: var(--text-mid); }
+  .breakdown-table td:last-child { text-align: right; font-weight: 600; }
+
+  .info-banner {
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--text-mid);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .info-banner strong { color: var(--text); }
+
+  .section-divider {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 8px 0;
+  }
+
+  .presets {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .preset-btn {
+    padding: 6px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-mid);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .preset-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .preset-btn.active {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Monad Validator Profitability Calculator</h1>
+    <p>Estimate returns from running a Monad validator &mdash; Phase evaluation tool</p>
+  </header>
+
+  <div class="info-banner">
+    <strong>Monad Network:</strong> Mainnet launched Nov 24, 2025. 200 max validators. 0.4s blocks.
+    25 MON block reward (~2% annual inflation). No automated slashing currently active.
+    <strong>Bare metal required</strong> &mdash; cloud hosting not supported.
+  </div>
+
+  <div class="grid">
+    <!-- INPUTS -->
+    <div class="card">
+      <h2>Validator Parameters</h2>
+
+      <div class="presets">
+        <button class="preset-btn" onclick="applyPreset('vdp-t1')">VDP Tier 1</button>
+        <button class="preset-btn" onclick="applyPreset('vdp-t2')">VDP Tier 2</button>
+        <button class="preset-btn" onclick="applyPreset('vdp-t3')">VDP Tier 3</button>
+        <button class="preset-btn" onclick="applyPreset('vdp-t4')">VDP Tier 4</button>
+        <button class="preset-btn" onclick="applyPreset('custom')">Custom</button>
+      </div>
+
+      <div class="field">
+        <label>Total Validator Stake (MON) <span class="hint">Min 10M to activate</span></label>
+        <input type="number" id="stake" value="52500000" min="10000000" step="1000000" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Self-Stake (MON) <span class="hint">Min 100K required</span></label>
+        <input type="number" id="selfStake" value="100000" min="100000" step="100000" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Commission Rate <span class="hint">VDP cap: 20% (first 6mo) / 10%</span></label>
+        <div class="range-row">
+          <input type="range" id="commission" min="0" max="100" value="10" oninput="calc()">
+          <span class="range-val" id="commissionVal">10%</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>MON Price (USD)</label>
+        <input type="number" id="monPrice" value="0.02" min="0.001" step="0.001" oninput="calc()">
+      </div>
+
+      <h2 style="margin-top: 20px;">Network Assumptions</h2>
+
+      <div class="field">
+        <label>Total Network Staked (MON) <span class="hint">~15-25B estimated</span></label>
+        <input type="number" id="networkStake" value="20000000000" min="1000000000" step="1000000000" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Active Validators</label>
+        <input type="number" id="activeValidators" value="170" min="1" max="200" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Priority Fee Revenue (MON/day) <span class="hint">Highly variable</span></label>
+        <input type="number" id="priorityFees" value="0" min="0" step="100" oninput="calc()">
+      </div>
+
+      <h2 style="margin-top: 20px;">Operating Costs</h2>
+
+      <div class="field">
+        <label>Monthly Server Cost (USD) <span class="hint">Bare metal $200-$400</span></label>
+        <input type="number" id="serverCost" value="300" min="0" step="25" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Other Monthly Costs (USD) <span class="hint">Monitoring, bandwidth, etc.</span></label>
+        <input type="number" id="otherCosts" value="50" min="0" step="10" oninput="calc()">
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div>
+      <div class="card">
+        <h2>Profitability Estimate</h2>
+
+        <div class="results-grid">
+          <div class="result-item">
+            <div class="result-label">Annual Revenue</div>
+            <div class="result-value neutral" id="annualRevenue">$0</div>
+            <div class="result-sub" id="annualRevenueMon">0 MON</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Annual Costs</div>
+            <div class="result-value negative" id="annualCosts">$0</div>
+            <div class="result-sub" id="annualCostBreakdown">Server + other</div>
+          </div>
+          <div class="result-item full">
+            <div class="result-label">Net Annual Profit</div>
+            <div class="result-value" id="netProfit">$0</div>
+            <div class="result-sub" id="netProfitMon">0 MON</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Monthly Profit</div>
+            <div class="result-value" id="monthlyProfit">$0</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Effective APY</div>
+            <div class="result-value neutral" id="effectiveApy">0%</div>
+          </div>
+        </div>
+
+        <div id="verdict" class="verdict-card profitable">
+          <div class="verdict-title" id="verdictTitle">Calculating...</div>
+          <div class="verdict-detail" id="verdictDetail"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 20px;">
+        <h2>Revenue Breakdown</h2>
+        <table class="breakdown-table">
+          <tr><td>Blocks proposed / day</td><td id="blocksPerDay">0</td></tr>
+          <tr><td>Block rewards / day</td><td id="dailyBlockRewards">0 MON</td></tr>
+          <tr><td>Commission income / day</td><td id="dailyCommission">0 MON</td></tr>
+          <tr><td>Self-stake rewards / day</td><td id="dailySelfRewards">0 MON</td></tr>
+          <tr><td>Priority fees / day</td><td id="dailyPriorityFees">0 MON</td></tr>
+          <tr><td>Total daily revenue</td><td id="dailyTotal">0 MON</td></tr>
+          <tr><td>Network share</td><td id="networkShare">0%</td></tr>
+          <tr><td>Gross APY (on total stake)</td><td id="grossApy">0%</td></tr>
+        </table>
+      </div>
+
+      <div class="card" style="margin-top: 20px;">
+        <h2>Key Assumptions</h2>
+        <table class="breakdown-table">
+          <tr><td>Block time</td><td>0.4 seconds</td></tr>
+          <tr><td>Blocks per day</td><td>216,000</td></tr>
+          <tr><td>Block reward</td><td>25 MON</td></tr>
+          <tr><td>Daily inflation</td><td>5,400,000 MON</td></tr>
+          <tr><td>Annual inflation</td><td>~1.97B MON (~2%)</td></tr>
+          <tr><td>Max validator set</td><td>200</td></tr>
+          <tr><td>Min self-stake</td><td>100,000 MON</td></tr>
+          <tr><td>Min total stake</td><td>10,000,000 MON</td></tr>
+          <tr><td>Unbonding period</td><td>~5.5 hours (1 epoch)</td></tr>
+          <tr><td>Slashing</td><td>Not active (protocol level)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Phase &mdash; Monad Validator Evaluation Tool &mdash; Data as of March 2026
+  </footer>
+</div>
+
+<script>
+const BLOCKS_PER_DAY = 216000;
+const BLOCK_REWARD = 25;
+const DAILY_INFLATION = BLOCKS_PER_DAY * BLOCK_REWARD; // 5,400,000 MON
+
+function fmt(n, decimals = 0) {
+  return n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+}
+
+function fmtUsd(n) {
+  if (Math.abs(n) >= 1000000) return '$' + (n / 1000000).toFixed(2) + 'M';
+  if (Math.abs(n) >= 1000) return '$' + fmt(n, 0);
+  return '$' + fmt(n, 2);
+}
+
+function applyPreset(tier) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  const presets = {
+    'vdp-t1': { stake: 90000000, selfStake: 100000, commission: 10 },
+    'vdp-t2': { stake: 75000000, selfStake: 100000, commission: 10 },
+    'vdp-t3': { stake: 52500000, selfStake: 100000, commission: 10 },
+    'vdp-t4': { stake: 15000000, selfStake: 100000, commission: 10 },
+    'custom': { stake: 50000000, selfStake: 5000000, commission: 15 },
+  };
+
+  const p = presets[tier];
+  document.getElementById('stake').value = p.stake;
+  document.getElementById('selfStake').value = p.selfStake;
+  document.getElementById('commission').value = p.commission;
+  calc();
+}
+
+function calc() {
+  const stake = parseFloat(document.getElementById('stake').value) || 0;
+  const selfStake = parseFloat(document.getElementById('selfStake').value) || 0;
+  const commissionPct = parseFloat(document.getElementById('commission').value) || 0;
+  const monPrice = parseFloat(document.getElementById('monPrice').value) || 0;
+  const networkStake = parseFloat(document.getElementById('networkStake').value) || 1;
+  const priorityFees = parseFloat(document.getElementById('priorityFees').value) || 0;
+  const serverCost = parseFloat(document.getElementById('serverCost').value) || 0;
+  const otherCosts = parseFloat(document.getElementById('otherCosts').value) || 0;
+
+  const commission = commissionPct / 100;
+  document.getElementById('commissionVal').textContent = commissionPct + '%';
+
+  // Network share and block production
+  const networkShare = stake / networkStake;
+  const blocksPerDay = BLOCKS_PER_DAY * networkShare;
+
+  // Total block rewards earned by this validator per day
+  const dailyBlockRewards = blocksPerDay * BLOCK_REWARD;
+
+  // Delegated stake = total - self
+  const delegatedStake = Math.max(0, stake - selfStake);
+
+  // Commission income: commission on delegator rewards
+  const delegatorShareOfRewards = dailyBlockRewards * (delegatedStake / stake);
+  const dailyCommission = delegatorShareOfRewards * commission;
+
+  // Self-stake rewards: own share of block rewards (no commission taken from self)
+  const dailySelfRewards = dailyBlockRewards * (selfStake / stake);
+
+  // Total daily revenue for the validator operator
+  const dailyTotalMon = dailyCommission + dailySelfRewards + priorityFees;
+  const annualTotalMon = dailyTotalMon * 365;
+  const annualRevenueUsd = annualTotalMon * monPrice;
+
+  // Costs
+  const annualCostsUsd = (serverCost + otherCosts) * 12;
+
+  // Net profit
+  const netProfitUsd = annualRevenueUsd - annualCostsUsd;
+  const netProfitMon = annualTotalMon;
+  const monthlyProfitUsd = netProfitUsd / 12;
+
+  // APY on self-stake (what the operator actually earns on their own capital)
+  const effectiveApy = selfStake > 0 ? ((dailyTotalMon * 365) / selfStake) * 100 : 0;
+
+  // Gross APY on total stake
+  const grossApy = stake > 0 ? ((dailyBlockRewards * 365) / stake) * 100 : 0;
+
+  // Update display
+  document.getElementById('annualRevenue').textContent = fmtUsd(annualRevenueUsd);
+  document.getElementById('annualRevenueMon').textContent = fmt(annualTotalMon, 0) + ' MON';
+  document.getElementById('annualCosts').textContent = fmtUsd(annualCostsUsd);
+  document.getElementById('annualCostBreakdown').textContent = `$${fmt(serverCost)}/mo server + $${fmt(otherCosts)}/mo other`;
+
+  document.getElementById('netProfit').textContent = fmtUsd(netProfitUsd);
+  document.getElementById('netProfit').className = 'result-value ' + (netProfitUsd >= 0 ? 'positive' : 'negative');
+  document.getElementById('netProfitMon').textContent = fmt(netProfitMon, 0) + ' MON earned / yr';
+
+  document.getElementById('monthlyProfit').textContent = fmtUsd(monthlyProfitUsd);
+  document.getElementById('monthlyProfit').className = 'result-value ' + (monthlyProfitUsd >= 0 ? 'positive' : 'negative');
+
+  document.getElementById('effectiveApy').textContent = effectiveApy.toFixed(2) + '%';
+
+  // Breakdown
+  document.getElementById('blocksPerDay').textContent = fmt(blocksPerDay, 1);
+  document.getElementById('dailyBlockRewards').textContent = fmt(dailyBlockRewards, 0) + ' MON';
+  document.getElementById('dailyCommission').textContent = fmt(dailyCommission, 0) + ' MON';
+  document.getElementById('dailySelfRewards').textContent = fmt(dailySelfRewards, 0) + ' MON';
+  document.getElementById('dailyPriorityFees').textContent = fmt(priorityFees, 0) + ' MON';
+  document.getElementById('dailyTotal').textContent = fmt(dailyTotalMon, 0) + ' MON ($' + fmt(dailyTotalMon * monPrice, 2) + ')';
+  document.getElementById('networkShare').textContent = (networkShare * 100).toFixed(4) + '%';
+  document.getElementById('grossApy').textContent = grossApy.toFixed(2) + '%';
+
+  // Verdict
+  const verdict = document.getElementById('verdict');
+  const verdictTitle = document.getElementById('verdictTitle');
+  const verdictDetail = document.getElementById('verdictDetail');
+
+  if (netProfitUsd > 1000) {
+    verdict.className = 'verdict-card profitable';
+    verdictTitle.textContent = 'Profitable';
+    verdictDetail.textContent = `Net ${fmtUsd(netProfitUsd)}/yr after ${fmtUsd(annualCostsUsd)} in operating costs. ${fmt(monthlyProfitUsd, 0)}/mo net.`;
+  } else if (netProfitUsd > 0) {
+    verdict.className = 'verdict-card marginal';
+    verdictTitle.textContent = 'Marginally Profitable';
+    verdictDetail.textContent = `Only ${fmtUsd(netProfitUsd)}/yr profit. Consider if the operational overhead is worth it.`;
+  } else {
+    verdict.className = 'verdict-card unprofitable';
+    verdictTitle.textContent = 'Not Profitable';
+    verdictDetail.textContent = `Operating at a loss of ${fmtUsd(Math.abs(netProfitUsd))}/yr. Costs exceed rewards at current MON price.`;
+  }
+}
+
+// Initialize
+calc();
+</script>
+</body>
+</html>
