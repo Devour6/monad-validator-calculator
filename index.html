@@ -304,6 +304,156 @@
     color: var(--cream);
   }
 
+  /* Known Validators Section */
+  .validators-section {
+    margin-top: 20px;
+  }
+
+  .card.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .validator-table-wrap {
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 8px;
+    border: 1px solid var(--cream-12);
+  }
+
+  .validator-table-wrap::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .validator-table-wrap::-webkit-scrollbar-track {
+    background: var(--cream-5);
+    border-radius: 3px;
+  }
+
+  .validator-table-wrap::-webkit-scrollbar-thumb {
+    background: var(--cream-20);
+    border-radius: 3px;
+  }
+
+  .validator-table-wrap::-webkit-scrollbar-thumb:hover {
+    background: var(--cream-40);
+  }
+
+  .validator-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .validator-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  .validator-table thead th {
+    font-family: 'Audiowide', cursive;
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--cream-40);
+    padding: 12px 14px;
+    text-align: left;
+    background: var(--dark);
+    border-bottom: 1px solid var(--cream-12);
+    white-space: nowrap;
+  }
+
+  .validator-table thead th:last-child,
+  .validator-table thead th:nth-child(5) {
+    text-align: right;
+  }
+
+  .validator-table tbody tr {
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid var(--cream-8);
+  }
+
+  .validator-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .validator-table tbody tr:hover {
+    background: var(--cream-8);
+  }
+
+  .validator-table tbody tr.active {
+    background: var(--cream-12);
+  }
+
+  .validator-table tbody td {
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--cream-60);
+    white-space: nowrap;
+  }
+
+  .validator-table tbody td:first-child {
+    color: var(--cream);
+    font-weight: 500;
+  }
+
+  .validator-table tbody td:last-child,
+  .validator-table tbody td:nth-child(5) {
+    text-align: right;
+  }
+
+  .validator-table tbody td.profit-positive {
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .validator-table tbody td.profit-negative {
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  .validator-table tbody td.profit-marginal {
+    color: var(--yellow);
+    font-weight: 600;
+  }
+
+  .tier-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--cream-8);
+    color: var(--cream-40);
+    letter-spacing: 0.02em;
+  }
+
+  .tier-badge.t1 { background: rgba(74, 222, 128, 0.12); color: var(--green); }
+  .tier-badge.t2 { background: rgba(250, 204, 21, 0.12); color: var(--yellow); }
+  .tier-badge.t3 { background: var(--cream-8); color: var(--cream-40); }
+  .tier-badge.t4 { background: rgba(248, 113, 113, 0.12); color: var(--red); }
+
+  .validator-note {
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--cream-20);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .validator-note a {
+    color: var(--cream-40);
+    text-decoration: underline;
+    text-decoration-color: var(--cream-20);
+    transition: color 0.2s;
+  }
+
+  .validator-note a:hover {
+    color: var(--cream);
+  }
+
   footer {
     text-align: center;
     margin-top: 32px;
@@ -467,6 +617,32 @@
     </div>
   </div>
 
+  <!-- Known Validators Section -->
+  <div class="validators-section">
+    <div class="card">
+      <h2>Known VDP Validators</h2>
+      <div class="validator-table-wrap">
+        <table class="validator-table" id="validatorTable">
+          <thead>
+            <tr>
+              <th>Validator</th>
+              <th>Stake (MON)</th>
+              <th>Commission</th>
+              <th>Tier</th>
+              <th>Est. Annual Profit</th>
+            </tr>
+          </thead>
+          <tbody id="validatorTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      <p class="validator-note">
+        Stake amounts are estimated based on VDP delegation tiers. Visit <a href="https://monadvision.com" target="_blank" rel="noopener noreferrer">monadvision.com</a> for live data.
+      </p>
+    </div>
+  </div>
+
   <footer>
     <span>Phase</span> &mdash; Monad Validator Evaluation Tool &mdash; March 2026
   </footer>
@@ -476,6 +652,26 @@
 const BLOCKS_PER_DAY = 216000;
 const BLOCK_REWARD = 25;
 const DAILY_INFLATION = BLOCKS_PER_DAY * BLOCK_REWARD;
+
+const KNOWN_VALIDATORS = [
+  { name: 'Chorus One',     stake: 90000000,  commission: 10, tier: 'VDP T1' },
+  { name: 'Figment',        stake: 90000000,  commission: 10, tier: 'VDP T1' },
+  { name: 'Everstake',      stake: 75000000,  commission: 10, tier: 'VDP T2' },
+  { name: 'Kiln',           stake: 75000000,  commission: 10, tier: 'VDP T2' },
+  { name: 'P2P.org',        stake: 52500000,  commission: 10, tier: 'VDP T3' },
+  { name: 'Nodes.Guru',     stake: 52500000,  commission: 20, tier: 'VDP T3' },
+  { name: 'Simply Staking', stake: 52500000,  commission: 10, tier: 'VDP T3' },
+  { name: 'Nansen',         stake: 52500000,  commission: 10, tier: 'VDP T3' },
+  { name: 'CryptoCrew',     stake: 52500000,  commission: 10, tier: 'VDP T3' },
+  { name: 'Imperator',      stake: 52500000,  commission: 10, tier: 'VDP T3' },
+  { name: 'Stakin',         stake: 52500000,  commission: 10, tier: 'VDP T3' },
+  { name: 'Blockdaemon',    stake: 52500000,  commission: 10, tier: 'VDP T3' },
+  { name: 'Allnodes',       stake: 15000000,  commission: 10, tier: 'VDP T4' },
+  { name: 'Stakely',        stake: 15000000,  commission: 20, tier: 'VDP T4' },
+  { name: 'Coinage x DAIC', stake: 15000000,  commission: 10, tier: 'VDP T4' },
+];
+
+let selectedValidatorIndex = -1;
 
 function fmt(n, decimals = 0) {
   return n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
@@ -487,8 +683,100 @@ function fmtUsd(n) {
   return '$' + fmt(n, 2);
 }
 
+function calcValidatorProfit(validatorStake, commissionPct) {
+  const monPrice = parseFloat(document.getElementById('monPrice').value) || 0;
+  const networkStake = parseFloat(document.getElementById('networkStake').value) || 1;
+  const serverCost = parseFloat(document.getElementById('serverCost').value) || 0;
+  const otherCosts = parseFloat(document.getElementById('otherCosts').value) || 0;
+  const priorityFees = parseFloat(document.getElementById('priorityFees').value) || 0;
+
+  const selfStake = 100000; // Assume min self-stake for validators
+  const commission = commissionPct / 100;
+  const networkShare = validatorStake / networkStake;
+  const blocksPerDay = BLOCKS_PER_DAY * networkShare;
+  const dailyBlockRewards = blocksPerDay * BLOCK_REWARD;
+  const delegatedStake = Math.max(0, validatorStake - selfStake);
+  const delegatorShareOfRewards = dailyBlockRewards * (delegatedStake / validatorStake);
+  const dailyCommission = delegatorShareOfRewards * commission;
+  const dailySelfRewards = dailyBlockRewards * (selfStake / validatorStake);
+  const dailyTotalMon = dailyCommission + dailySelfRewards + priorityFees;
+  const annualTotalMon = dailyTotalMon * 365;
+  const annualRevenueUsd = annualTotalMon * monPrice;
+  const annualCostsUsd = (serverCost + otherCosts) * 12;
+  const netProfitUsd = annualRevenueUsd - annualCostsUsd;
+
+  return netProfitUsd;
+}
+
+function getTierClass(tier) {
+  if (tier === 'VDP T1') return 't1';
+  if (tier === 'VDP T2') return 't2';
+  if (tier === 'VDP T3') return 't3';
+  if (tier === 'VDP T4') return 't4';
+  return '';
+}
+
+function renderValidatorTable() {
+  const tbody = document.getElementById('validatorTableBody');
+  tbody.innerHTML = '';
+
+  KNOWN_VALIDATORS.forEach(function(v, index) {
+    const profit = calcValidatorProfit(v.stake, v.commission);
+    const tr = document.createElement('tr');
+
+    if (index === selectedValidatorIndex) {
+      tr.classList.add('active');
+    }
+
+    let profitClass = 'profit-positive';
+    if (profit < 0) {
+      profitClass = 'profit-negative';
+    } else if (profit < 1000) {
+      profitClass = 'profit-marginal';
+    }
+
+    const tierClass = getTierClass(v.tier);
+
+    tr.innerHTML =
+      '<td>' + v.name + '</td>' +
+      '<td>' + fmt(v.stake, 0) + '</td>' +
+      '<td>' + v.commission + '%</td>' +
+      '<td><span class="tier-badge ' + tierClass + '">' + v.tier + '</span></td>' +
+      '<td class="' + profitClass + '">' + fmtUsd(profit) + '/yr</td>';
+
+    tr.addEventListener('click', function() {
+      selectValidator(index);
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+function selectValidator(index) {
+  selectedValidatorIndex = index;
+  const v = KNOWN_VALIDATORS[index];
+
+  // Populate calculator inputs
+  document.getElementById('stake').value = v.stake;
+  document.getElementById('selfStake').value = 100000;
+  document.getElementById('commission').value = v.commission;
+
+  // Clear preset button active states
+  document.querySelectorAll('.preset-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
+
+  // Recalculate
+  calc();
+}
+
 function applyPreset(tier) {
-  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  // Clear selected validator
+  selectedValidatorIndex = -1;
+
+  document.querySelectorAll('.preset-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
   event.target.classList.add('active');
 
   const presets = {
@@ -496,7 +784,7 @@ function applyPreset(tier) {
     'vdp-t2': { stake: 75000000, selfStake: 100000, commission: 10 },
     'vdp-t3': { stake: 52500000, selfStake: 100000, commission: 10 },
     'vdp-t4': { stake: 15000000, selfStake: 100000, commission: 10 },
-    'custom': { stake: 50000000, selfStake: 5000000, commission: 15 },
+    'custom':  { stake: 50000000, selfStake: 5000000, commission: 15 },
   };
 
   const p = presets[tier];
@@ -538,7 +826,7 @@ function calc() {
   document.getElementById('annualRevenue').textContent = fmtUsd(annualRevenueUsd);
   document.getElementById('annualRevenueMon').textContent = fmt(annualTotalMon, 0) + ' MON';
   document.getElementById('annualCosts').textContent = fmtUsd(annualCostsUsd);
-  document.getElementById('annualCostBreakdown').textContent = `$${fmt(serverCost)}/mo server + $${fmt(otherCosts)}/mo other`;
+  document.getElementById('annualCostBreakdown').textContent = '$' + fmt(serverCost) + '/mo server + $' + fmt(otherCosts) + '/mo other';
   document.getElementById('netProfit').textContent = fmtUsd(netProfitUsd);
   document.getElementById('netProfit').className = 'result-value ' + (netProfitUsd >= 0 ? 'positive' : 'negative');
   document.getElementById('netProfitMon').textContent = fmt(annualTotalMon, 0) + ' MON earned / yr';
@@ -561,18 +849,22 @@ function calc() {
   if (netProfitUsd > 1000) {
     verdict.className = 'verdict-card profitable';
     verdictTitle.textContent = 'Profitable';
-    verdictDetail.textContent = `Net ${fmtUsd(netProfitUsd)}/yr after ${fmtUsd(annualCostsUsd)} in operating costs. ${fmt(monthlyProfitUsd, 0)}/mo net.`;
+    verdictDetail.textContent = 'Net ' + fmtUsd(netProfitUsd) + '/yr after ' + fmtUsd(annualCostsUsd) + ' in operating costs. ' + fmt(monthlyProfitUsd, 0) + '/mo net.';
   } else if (netProfitUsd > 0) {
     verdict.className = 'verdict-card marginal';
     verdictTitle.textContent = 'Marginally Profitable';
-    verdictDetail.textContent = `Only ${fmtUsd(netProfitUsd)}/yr profit. Consider if the operational overhead is worth it.`;
+    verdictDetail.textContent = 'Only ' + fmtUsd(netProfitUsd) + '/yr profit. Consider if the operational overhead is worth it.';
   } else {
     verdict.className = 'verdict-card unprofitable';
     verdictTitle.textContent = 'Not Profitable';
-    verdictDetail.textContent = `Operating at a loss of ${fmtUsd(Math.abs(netProfitUsd))}/yr. Costs exceed rewards at current MON price.`;
+    verdictDetail.textContent = 'Operating at a loss of ' + fmtUsd(Math.abs(netProfitUsd)) + '/yr. Costs exceed rewards at current MON price.';
   }
+
+  // Re-render the validator table with updated profits
+  renderValidatorTable();
 }
 
+// Initial calculation and table render
 calc();
 </script>
 </body>
