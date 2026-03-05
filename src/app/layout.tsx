@@ -3,15 +3,16 @@ import { Audiowide, Outfit } from "next/font/google";
 import "./globals.css";
 
 const audiowide = Audiowide({
-  weight: "400",
+  variable: "--font-display",
   subsets: ["latin"],
-  variable: "--font-audiowide",
+  weight: "400",
   display: "swap",
 });
 
 const outfit = Outfit({
+  variable: "--font-body",
   subsets: ["latin"],
-  variable: "--font-outfit",
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -26,10 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body
-        className={`${audiowide.variable} ${outfit.variable} bg-dark text-cream font-body antialiased`}
-      >
+    <html lang="en" className={`${audiowide.variable} ${outfit.variable}`}>
+      <body className="antialiased">
         {children}
       </body>
     </html>
