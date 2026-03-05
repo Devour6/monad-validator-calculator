@@ -48,8 +48,8 @@ export const PRESETS: PresetConfig[] = [
 
 export const DEFAULT_INPUTS: CalculatorInputs = {
   stake: 50000000,
-  selfStake: 5000000,
-  commission: 15,
+  selfStake: 100000,
+  commission: 10,
   monPrice: DEFAULT_MON_PRICE,
   networkStake: DEFAULT_TOTAL_STAKED,
   activeValidators: DEFAULT_ACTIVE_VALIDATORS,

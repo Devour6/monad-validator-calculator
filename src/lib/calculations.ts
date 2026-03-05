@@ -95,7 +95,7 @@ export function calculateBreakevenStake(
   serverCost: number,
   otherCosts: number
 ): number {
-  if (monPrice <= 0 || networkStake <= 0) return 10000000;
+  if (monPrice <= 0 || networkStake <= 0) return selfStake;
 
   const c = commissionPct / 100;
   const K = (BLOCKS_PER_DAY * BLOCK_REWARD) / networkStake;
@@ -103,15 +103,15 @@ export function calculateBreakevenStake(
   const dailyMONNeeded = annualCosts / (365 * monPrice);
   const netDailyNeeded = dailyMONNeeded - priorityFees;
 
-  if (netDailyNeeded <= 0) return Math.max(selfStake, 10000000);
+  if (netDailyNeeded <= 0) return selfStake;
 
   if (c <= 0) {
     // No commission — income is only from self-stake, can't solve for total stake
-    return Math.max(selfStake, 10000000);
+    return selfStake;
   }
 
   const breakeven = (netDailyNeeded / K - selfStake * (1 - c)) / c;
-  return Math.max(Math.round(breakeven), selfStake, 10000000); // min 10M to activate
+  return Math.max(Math.round(breakeven), selfStake);
 }
 
 export function getVerdict(netProfitUsd: number): Verdict {
