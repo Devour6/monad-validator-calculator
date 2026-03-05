@@ -45,10 +45,9 @@ export function ValidatorTable({
 }: ValidatorTableProps) {
   return (
     <div
-      className="relative overflow-hidden bg-cream-5/30 backdrop-blur-xl border border-cream-8 rounded-2xl p-6 transition-colors hover:border-cream-12 opacity-0 animate-fade-in-up"
-      style={{ animationDelay: "0.24s" }}
+      className="bg-cream-5 border border-cream-8 rounded-2xl p-6 opacity-0 animate-fade-in-up"
+      style={{ animationDelay: "0.32s" }}
     >
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cream-20 to-transparent opacity-60" />
 
       <h2 className="font-display text-[11px] font-normal uppercase tracking-[0.12em] text-cream-40 mb-5">
         Active Validators

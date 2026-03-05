@@ -82,21 +82,11 @@ export default function Home() {
       <div className="max-w-[1340px] mx-auto">
         <Header inputs={inputs} />
         <StatsBar inputs={inputs} />
-        <ValidatorTable
-          sorted={sorted}
-          sortCol={sortCol}
-          sortDir={sortDir}
-          searchTerm={searchTerm}
-          selectedName={selectedName}
-          setSearchTerm={setSearchTerm}
-          onRowClick={handleRowClick}
-          toggleSort={toggleSort}
-        />
 
-        {/* Calculator Grid */}
+        {/* Calculator + Results — above the table */}
         <div
           ref={calcGridRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
         >
           <CalculatorForm
             inputs={inputs}
@@ -112,6 +102,18 @@ export default function Home() {
             <KeyAssumptions />
           </div>
         </div>
+
+        {/* Validator Table — below calculator, with scroll */}
+        <ValidatorTable
+          sorted={sorted}
+          sortCol={sortCol}
+          sortDir={sortDir}
+          searchTerm={searchTerm}
+          selectedName={selectedName}
+          setSearchTerm={setSearchTerm}
+          onRowClick={handleRowClick}
+          toggleSort={toggleSort}
+        />
 
         <Footer />
       </div>

@@ -58,9 +58,8 @@ export function StatsBar({ inputs }: StatsBarProps) {
       {items.map((item) => (
         <div
           key={item.label}
-          className="relative overflow-hidden bg-cream-5/30 backdrop-blur-xl border border-cream-8 rounded-xl px-[18px] py-4"
+          className="bg-cream-5 border border-cream-8 rounded-xl px-[18px] py-4"
         >
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cream-12 to-transparent" />
           <div className="font-display text-[9px] uppercase tracking-[0.1em] text-cream-40 mb-[6px] font-normal">
             {item.label}
           </div>
