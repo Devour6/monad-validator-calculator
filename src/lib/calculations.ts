@@ -86,6 +86,34 @@ export function calculateValidatorProfit(
   return annualRevenueUsd - annualCostsUsd;
 }
 
+export function calculateBreakevenStake(
+  selfStake: number,
+  commissionPct: number,
+  monPrice: number,
+  networkStake: number,
+  priorityFees: number,
+  serverCost: number,
+  otherCosts: number
+): number {
+  if (monPrice <= 0 || networkStake <= 0) return 10000000;
+
+  const c = commissionPct / 100;
+  const K = (BLOCKS_PER_DAY * BLOCK_REWARD) / networkStake;
+  const annualCosts = (serverCost + otherCosts) * 12;
+  const dailyMONNeeded = annualCosts / (365 * monPrice);
+  const netDailyNeeded = dailyMONNeeded - priorityFees;
+
+  if (netDailyNeeded <= 0) return Math.max(selfStake, 10000000);
+
+  if (c <= 0) {
+    // No commission — income is only from self-stake, can't solve for total stake
+    return Math.max(selfStake, 10000000);
+  }
+
+  const breakeven = (netDailyNeeded / K - selfStake * (1 - c)) / c;
+  return Math.max(Math.round(breakeven), selfStake, 10000000); // min 10M to activate
+}
+
 export function getVerdict(netProfitUsd: number): Verdict {
   if (netProfitUsd > 1000) return "profitable";
   if (netProfitUsd > 0) return "marginal";
