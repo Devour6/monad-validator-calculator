@@ -1,13 +1,6 @@
 "use client";
 
-import { fmtCompact } from "@/lib/formatters";
-import type { CalculatorInputs } from "@/lib/types";
-
-interface HeaderProps {
-  inputs: CalculatorInputs;
-}
-
-export function Header({ inputs }: HeaderProps) {
+export function Header() {
   return (
     <>
       <header

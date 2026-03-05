@@ -54,7 +54,7 @@ export function CalculatorForm({
         </label>
         <input
           type="number"
-          className="w-full py-[11px] px-[14px] bg-cream-5 border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20 focus:bg-cream-8"
+          className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.stake}
           min={10000000}
           step={1000000}
@@ -74,7 +74,7 @@ export function CalculatorForm({
         </label>
         <input
           type="number"
-          className="w-full py-[11px] px-[14px] bg-cream-5 border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20 focus:bg-cream-8"
+          className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.selfStake}
           min={100000}
           step={100000}
@@ -116,7 +116,7 @@ export function CalculatorForm({
         </label>
         <input
           type="number"
-          className="w-full py-[11px] px-[14px] bg-cream-5 border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20 focus:bg-cream-8"
+          className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.monPrice}
           min={0.001}
           step={0.001}
@@ -127,7 +127,7 @@ export function CalculatorForm({
       </div>
 
       {/* Section: Network Assumptions */}
-      <div className="font-display text-[13px] font-normal uppercase tracking-[0.1em] text-cream-20 mt-6 mb-2 pt-[18px] border-t border-cream-5">
+      <div className="font-display text-[11px] font-normal uppercase tracking-[0.12em] text-cream-20 mt-6 mb-3 pt-4 border-t border-cream-8">
         Network Assumptions
       </div>
 
@@ -141,7 +141,7 @@ export function CalculatorForm({
         </label>
         <input
           type="number"
-          className="w-full py-[11px] px-[14px] bg-cream-5 border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20 focus:bg-cream-8"
+          className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.networkStake}
           min={100000000}
           step={100000000}
@@ -158,7 +158,7 @@ export function CalculatorForm({
         </label>
         <input
           type="number"
-          className="w-full py-[11px] px-[14px] bg-cream-5 border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20 focus:bg-cream-8"
+          className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.activeValidators}
           min={1}
           max={200}
@@ -178,7 +178,7 @@ export function CalculatorForm({
         </label>
         <input
           type="number"
-          className="w-full py-[11px] px-[14px] bg-cream-5 border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20 focus:bg-cream-8"
+          className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.priorityFees}
           min={0}
           step={100}
@@ -189,7 +189,7 @@ export function CalculatorForm({
       </div>
 
       {/* Section: Operating Costs */}
-      <div className="font-display text-[13px] font-normal uppercase tracking-[0.1em] text-cream-20 mt-6 mb-2 pt-[18px] border-t border-cream-5">
+      <div className="font-display text-[11px] font-normal uppercase tracking-[0.12em] text-cream-20 mt-6 mb-3 pt-4 border-t border-cream-8">
         Operating Costs
       </div>
 
@@ -203,7 +203,7 @@ export function CalculatorForm({
         </label>
         <input
           type="number"
-          className="w-full py-[11px] px-[14px] bg-cream-5 border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20 focus:bg-cream-8"
+          className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.serverCost}
           min={0}
           step={25}
@@ -223,7 +223,7 @@ export function CalculatorForm({
         </label>
         <input
           type="number"
-          className="w-full py-[11px] px-[14px] bg-cream-5 border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20 focus:bg-cream-8"
+          className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.otherCosts}
           min={0}
           step={10}

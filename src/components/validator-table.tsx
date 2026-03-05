@@ -71,7 +71,7 @@ export function ValidatorTable({
         </svg>
         <input
           type="text"
-          className="w-full py-3 pr-4 pl-10 bg-cream-5 border border-cream-8 rounded-[10px] text-cream text-sm font-body font-normal outline-none transition-all placeholder:text-cream-20 focus:border-cream-20 focus:bg-cream-8"
+          className="w-full py-3 pr-4 pl-10 bg-dark border border-cream-8 rounded-[10px] text-cream text-sm font-body font-normal outline-none transition-all placeholder:text-cream-20 focus:border-cream-20"
           placeholder="Search validators..."
           autoComplete="off"
           value={searchTerm}

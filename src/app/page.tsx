@@ -80,7 +80,7 @@ export default function Home() {
   return (
     <div className="relative z-[1] px-6 pt-8 pb-6">
       <div className="max-w-[1340px] mx-auto">
-        <Header inputs={inputs} />
+        <Header />
         <StatsBar inputs={inputs} />
 
         {/* Calculator + Results — above the table */}
