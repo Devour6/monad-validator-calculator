@@ -4,8 +4,9 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import type { CalculatorInputs, CalculatorResults, Verdict, PresetConfig } from "@/lib/types";
 import { DEFAULT_INPUTS, PRESETS } from "@/lib/constants";
 import { calculateProfit, getVerdict, calculateBreakevenStake } from "@/lib/calculations";
+import type { LiveData } from "@/hooks/use-live-data";
 
-export function useCalculator() {
+export function useCalculator(liveData?: LiveData | null) {
   const [inputs, setInputs] = useState<CalculatorInputs>(() => {
     const defaults = { ...DEFAULT_INPUTS };
     defaults.stake = calculateBreakevenStake(
@@ -17,6 +18,20 @@ export function useCalculator() {
   });
   const [activePreset, setActivePreset] = useState<string | null>(null);
   const [isBreakeven, setIsBreakeven] = useState(true);
+  const [liveApplied, setLiveApplied] = useState(false);
+
+  // When live data arrives, update economic params
+  useEffect(() => {
+    if (!liveData || liveApplied) return;
+    setLiveApplied(true);
+    setInputs(prev => ({
+      ...prev,
+      monPrice: liveData.monPrice,
+      networkStake: liveData.networkStake,
+      activeValidators: liveData.activeValidators,
+    }));
+    // Breakeven will auto-recalculate via the effect below
+  }, [liveData, liveApplied]);
 
   // Auto-update stake to breakeven when economic params change
   useEffect(() => {

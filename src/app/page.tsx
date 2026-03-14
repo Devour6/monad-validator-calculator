@@ -2,6 +2,7 @@
 
 import { useCallback, useRef } from "react";
 import { useCalculator } from "@/hooks/use-calculator";
+import { useLiveData } from "@/hooks/use-live-data";
 import { useValidatorTable } from "@/hooks/use-validator-table";
 import { calculateValidatorProfit } from "@/lib/calculations";
 import { Header } from "@/components/header";
@@ -15,6 +16,8 @@ import { KeyAssumptions } from "@/components/key-assumptions";
 import { Footer } from "@/components/footer";
 
 export default function Home() {
+  const { data: liveData, loading } = useLiveData();
+
   const {
     inputs,
     results,
@@ -24,7 +27,7 @@ export default function Home() {
     updateInput,
     applyPreset,
     loadValidator,
-  } = useCalculator();
+  } = useCalculator(liveData);
 
   const calcGridRef = useRef<HTMLDivElement>(null);
 
@@ -81,7 +84,7 @@ export default function Home() {
     <div className="relative z-[1] px-6 pt-8 pb-6">
       <div className="max-w-[1340px] mx-auto">
         <Header />
-        <StatsBar inputs={inputs} />
+        <StatsBar inputs={inputs} liveData={liveData} loading={loading} />
 
         {/* Calculator + Results — above the table */}
         <div
