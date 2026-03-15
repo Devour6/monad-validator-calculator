@@ -14,6 +14,16 @@ export async function GET() {
       { next: { revalidate: 300 } }
     );
 
+    if (!priceRes.ok) {
+      // Rate-limited or API error — return defaults with null updatedAt
+      return NextResponse.json({
+        monPrice: DEFAULT_MON_PRICE,
+        networkStake: DEFAULT_TOTAL_STAKED,
+        activeValidators: DEFAULT_ACTIVE_VALIDATORS,
+        updatedAt: null,
+      });
+    }
+
     const priceData = await priceRes.json();
     const monPrice = priceData?.monad?.usd ?? DEFAULT_MON_PRICE;
 

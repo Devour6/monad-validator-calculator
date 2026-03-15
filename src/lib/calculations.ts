@@ -13,13 +13,26 @@ export function calculateProfit(inputs: CalculatorInputs): CalculatorResults {
     otherCosts,
   } = inputs;
 
+  const annualCostsUsd = (serverCost + otherCosts) * 12;
+
+  // Guard against division by zero — return zeroed results with costs
+  if (networkStake <= 0 || monPrice <= 0) {
+    return {
+      networkShare: 0, blocksPerDay: 0, dailyBlockRewards: 0,
+      dailyCommission: 0, dailySelfRewards: 0, dailyPriorityFees: 0,
+      dailyTotalMon: 0, annualTotalMon: 0, annualRevenueUsd: 0,
+      annualCostsUsd, netProfitUsd: -annualCostsUsd,
+      monthlyProfitUsd: -annualCostsUsd / 12, effectiveApy: 0, grossApy: 0,
+    };
+  }
+
   const commission = commissionPct / 100;
 
   // Clamp selfStake to totalStake
   const selfStake =
     rawSelfStake > stake && stake > 0 ? stake : rawSelfStake;
 
-  const networkShare = stake / (networkStake || 1);
+  const networkShare = stake / networkStake;
   const blocksPerDay = BLOCKS_PER_DAY * networkShare;
   const dailyBlockRewards = blocksPerDay * BLOCK_REWARD;
 
@@ -34,7 +47,6 @@ export function calculateProfit(inputs: CalculatorInputs): CalculatorResults {
   const dailyTotalMon = dailyCommission + dailySelfRewards + dailyPriorityFees;
   const annualTotalMon = dailyTotalMon * 365;
   const annualRevenueUsd = annualTotalMon * monPrice;
-  const annualCostsUsd = (serverCost + otherCosts) * 12;
   const netProfitUsd = annualRevenueUsd - annualCostsUsd;
   const monthlyProfitUsd = netProfitUsd / 12;
   const effectiveApy =
@@ -70,7 +82,7 @@ export function calculateValidatorProfit(
   otherCosts: number,
   priorityFees: number
 ): number {
-  if (totalStake <= 0) return 0;
+  if (totalStake <= 0 || networkStake <= 0 || monPrice <= 0) return 0;
   const commission = commissionPct / 100;
   const networkShare = totalStake / networkStake;
   const blocksPerDay = BLOCKS_PER_DAY * networkShare;
@@ -114,8 +126,11 @@ export function calculateBreakevenStake(
   return Math.max(Math.round(breakeven), selfStake);
 }
 
+// Verdict thresholds (USD)
+const VERDICT_PROFITABLE = 1000;
+
 export function getVerdict(netProfitUsd: number): Verdict {
-  if (netProfitUsd > 1000) return "profitable";
+  if (netProfitUsd > VERDICT_PROFITABLE) return "profitable";
   if (netProfitUsd > 0) return "marginal";
   return "unprofitable";
 }

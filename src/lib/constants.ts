@@ -2,7 +2,6 @@ import type { PresetConfig, CalculatorInputs } from "@/lib/types";
 
 export const BLOCKS_PER_DAY = 216000;
 export const BLOCK_REWARD = 25;
-export const DAILY_EMISSION = BLOCKS_PER_DAY * BLOCK_REWARD;
 export const DEFAULT_MON_PRICE = 0.022;
 export const DEFAULT_TOTAL_STAKED = 12355710073;
 export const DEFAULT_ACTIVE_VALIDATORS = 169;
