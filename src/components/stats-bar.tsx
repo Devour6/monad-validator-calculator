@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { VALIDATORS } from "@/data/validators";
 import { BLOCKS_PER_DAY, BLOCK_REWARD, MAX_VALIDATORS } from "@/lib/constants";
-import { fmtCompact } from "@/lib/formatters";
+import { fmtCompact, fmtPercent } from "@/lib/formatters";
 import type { CalculatorInputs } from "@/lib/types";
 import type { LiveData } from "@/hooks/use-live-data";
 
@@ -33,8 +33,8 @@ export function StatsBar({ inputs, liveData, loading }: StatsBarProps) {
     return {
       count,
       totalStaked: fmtCompact(liveData?.networkStake ?? totalStaked),
-      avgCommission: (totalComm / VALIDATORS.length).toFixed(1) + "%",
-      avgApy: (totalApy / VALIDATORS.length).toFixed(2) + "%",
+      avgCommission: fmtPercent(totalComm / VALIDATORS.length, 1),
+      avgApy: fmtPercent(totalApy / VALIDATORS.length),
     };
   }, [inputs.networkStake, liveData]);
 

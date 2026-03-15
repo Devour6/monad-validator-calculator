@@ -18,3 +18,7 @@ export function fmtUsd(n: number): string {
   if (Math.abs(n) >= 1000) return "$" + fmt(n, 0);
   return "$" + fmt(n, 2);
 }
+
+export function fmtPercent(n: number, decimals = 2): string {
+  return n.toFixed(decimals) + "%";
+}

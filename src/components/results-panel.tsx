@@ -1,7 +1,7 @@
 "use client";
 
 import type { CalculatorResults } from "@/lib/types";
-import { fmt, fmtUsd } from "@/lib/formatters";
+import { fmt, fmtUsd, fmtPercent } from "@/lib/formatters";
 
 interface ResultsPanelProps {
   results: CalculatorResults;
@@ -23,7 +23,7 @@ export function ResultsPanel({ results }: ResultsPanelProps) {
         Profitability Estimate
       </h2>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Annual Revenue */}
         <div className="bg-cream-5 border border-cream-8 rounded-[10px] p-4 transition-colors hover:border-cream-12">
           <div className="font-display text-[9px] uppercase tracking-[0.1em] text-cream-40 mb-[6px] font-normal">
@@ -83,7 +83,7 @@ export function ResultsPanel({ results }: ResultsPanelProps) {
             Effective APY
           </div>
           <div className="font-body text-[26px] font-bold leading-[1.1] text-cream">
-            {results.effectiveApy.toFixed(2)}%
+            {fmtPercent(results.effectiveApy)}
           </div>
         </div>
       </div>

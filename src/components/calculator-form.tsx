@@ -46,14 +46,16 @@ export function CalculatorForm({
 
       {/* Total Validator Stake */}
       <div className="mb-4">
-        <label className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
+        <label htmlFor="stake" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           Total Validator Stake (MON)
           <span className="text-[11px] text-cream-20 font-light">
             Min 10M to activate
           </span>
         </label>
         <input
+          id="stake"
           type="number"
+          aria-label="Total Validator Stake"
           className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.stake}
           min={10000000}
@@ -66,14 +68,16 @@ export function CalculatorForm({
 
       {/* Self-Stake */}
       <div className="mb-4">
-        <label className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
+        <label htmlFor="selfStake" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           Self-Stake (MON)
           <span className="text-[11px] text-cream-20 font-light">
             Min 100K required
           </span>
         </label>
         <input
+          id="selfStake"
           type="number"
+          aria-label="Self-Stake"
           className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.selfStake}
           min={100000}
@@ -86,7 +90,7 @@ export function CalculatorForm({
 
       {/* Commission */}
       <div className="mb-4">
-        <label className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
+        <label htmlFor="commission" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           Commission Rate
           <span className="text-[11px] text-cream-20 font-light">
             VDP cap: 20% (first 6mo) / 10%
@@ -94,6 +98,7 @@ export function CalculatorForm({
         </label>
         <div className="flex items-center gap-3">
           <input
+            id="commission"
             type="range"
             aria-label="Commission Rate"
             className="flex-1"
@@ -112,11 +117,13 @@ export function CalculatorForm({
 
       {/* MON Price */}
       <div className="mb-4">
-        <label className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
+        <label htmlFor="monPrice" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           MON Price (USD)
         </label>
         <input
+          id="monPrice"
           type="number"
+          aria-label="MON Price"
           className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.monPrice}
           min={0.001}
@@ -134,14 +141,16 @@ export function CalculatorForm({
 
       {/* Total Network Staked */}
       <div className="mb-4">
-        <label className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
+        <label htmlFor="networkStake" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           Total Network Staked (MON)
           <span className="text-[11px] text-cream-20 font-light">
             ~12.36B on-chain
           </span>
         </label>
         <input
+          id="networkStake"
           type="number"
+          aria-label="Total Network Staked"
           className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.networkStake}
           min={100000000}
@@ -154,11 +163,13 @@ export function CalculatorForm({
 
       {/* Active Validators */}
       <div className="mb-4">
-        <label className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
+        <label htmlFor="activeValidators" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           Active Validators
         </label>
         <input
+          id="activeValidators"
           type="number"
+          aria-label="Active Validators"
           className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.activeValidators}
           min={1}
@@ -171,14 +182,16 @@ export function CalculatorForm({
 
       {/* Priority Fees */}
       <div className="mb-4">
-        <label className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
+        <label htmlFor="priorityFees" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           Priority Fee Revenue (MON/day)
           <span className="text-[11px] text-cream-20 font-light">
             Highly variable
           </span>
         </label>
         <input
+          id="priorityFees"
           type="number"
+          aria-label="Priority Fee Revenue"
           className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.priorityFees}
           min={0}
@@ -196,14 +209,16 @@ export function CalculatorForm({
 
       {/* Server Cost */}
       <div className="mb-4">
-        <label className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
+        <label htmlFor="serverCost" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           Monthly Server Cost (USD)
           <span className="text-[11px] text-cream-20 font-light">
             Bare metal $200-$350
           </span>
         </label>
         <input
+          id="serverCost"
           type="number"
+          aria-label="Monthly Server Cost"
           className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.serverCost}
           min={0}
@@ -216,14 +231,16 @@ export function CalculatorForm({
 
       {/* Other Costs */}
       <div className="mb-4">
-        <label className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
+        <label htmlFor="otherCosts" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           Other Monthly Costs (USD)
           <span className="text-[11px] text-cream-20 font-light">
             Monitoring, bandwidth, etc.
           </span>
         </label>
         <input
+          id="otherCosts"
           type="number"
+          aria-label="Other Monthly Costs"
           className="w-full py-[11px] px-[14px] bg-dark border border-cream-8 rounded-lg text-cream text-sm font-body font-normal outline-none transition-all focus:border-cream-20"
           value={inputs.otherCosts}
           min={0}

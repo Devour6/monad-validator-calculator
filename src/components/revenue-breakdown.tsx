@@ -1,7 +1,7 @@
 "use client";
 
 import type { CalculatorResults } from "@/lib/types";
-import { fmt } from "@/lib/formatters";
+import { fmt, fmtPercent } from "@/lib/formatters";
 
 interface RevenueBreakdownProps {
   results: CalculatorResults;
@@ -40,11 +40,11 @@ export function RevenueBreakdown({ results, monPrice }: RevenueBreakdownProps) {
     },
     {
       label: "Network share",
-      value: (results.networkShare * 100).toFixed(4) + "%",
+      value: fmtPercent(results.networkShare * 100, 4),
     },
     {
       label: "Gross APY (on total stake)",
-      value: results.grossApy.toFixed(2) + "%",
+      value: fmtPercent(results.grossApy),
     },
   ];
 

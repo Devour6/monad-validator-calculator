@@ -132,15 +132,20 @@ export function lerpColor(
   return `rgb(${r},${g},${bl})`;
 }
 
+// Phase palette RGB values for gradient interpolation
+const PHASE_RED: [number, number, number] = [248, 113, 113];   // #f87171
+const PHASE_YELLOW: [number, number, number] = [250, 204, 21]; // #facc15
+const PHASE_GREEN: [number, number, number] = [74, 222, 128];  // #4ade80
+
 export function profitColor(profit: number): string {
-  if (profit <= -2000) return "rgb(248,113,113)";
+  if (profit <= -2000) return `rgb(${PHASE_RED.join(",")})`;
   if (profit <= 0) {
     const t = (profit + 2000) / 2000;
-    return lerpColor([248, 113, 113], [250, 204, 21], t);
+    return lerpColor(PHASE_RED, PHASE_YELLOW, t);
   }
   if (profit <= 5000) {
     const t = profit / 5000;
-    return lerpColor([250, 204, 21], [74, 222, 128], t);
+    return lerpColor(PHASE_YELLOW, PHASE_GREEN, t);
   }
-  return "rgb(74,222,128)";
+  return `rgb(${PHASE_GREEN.join(",")})`;
 }

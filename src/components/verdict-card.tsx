@@ -19,7 +19,7 @@ export function VerdictCard({ verdict, results }: VerdictCardProps) {
 
   if (verdict === "profitable") {
     bgClass = "bg-green-dim";
-    borderClass = "border-[rgba(74,222,128,0.2)]";
+    borderClass = "border-phase-green/20";
     barColor = "from-transparent via-phase-green to-transparent";
     title = "Profitable";
     detail = `Net ${fmtUsd(netProfitUsd)}/yr after ${fmtUsd(
@@ -27,7 +27,7 @@ export function VerdictCard({ verdict, results }: VerdictCardProps) {
     )} in operating costs. ~${fmtUsd(monthlyProfitUsd)}/mo net.`;
   } else if (verdict === "marginal") {
     bgClass = "bg-yellow-dim";
-    borderClass = "border-[rgba(250,204,21,0.2)]";
+    borderClass = "border-phase-yellow/20";
     barColor = "from-transparent via-phase-yellow to-transparent";
     title = "Marginally Profitable";
     detail = `Only ${fmtUsd(
@@ -35,7 +35,7 @@ export function VerdictCard({ verdict, results }: VerdictCardProps) {
     )}/yr profit. Consider if the operational overhead is worth it.`;
   } else {
     bgClass = "bg-red-dim";
-    borderClass = "border-[rgba(248,113,113,0.2)]";
+    borderClass = "border-phase-red/20";
     barColor = "from-transparent via-phase-red to-transparent";
     title = "Not Profitable";
     detail = `Operating at a loss of ${fmtUsd(
