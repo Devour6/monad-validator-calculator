@@ -95,6 +95,7 @@ export function CalculatorForm({
         <div className="flex items-center gap-3">
           <input
             type="range"
+            aria-label="Commission Rate"
             className="flex-1"
             min={0}
             max={100}

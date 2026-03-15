@@ -18,20 +18,19 @@ export function useCalculator(liveData?: LiveData | null) {
   });
   const [activePreset, setActivePreset] = useState<string | null>(null);
   const [isBreakeven, setIsBreakeven] = useState(true);
-  const [liveApplied, setLiveApplied] = useState(false);
+  const [lastLiveTs, setLastLiveTs] = useState<string | null>(null);
 
-  // When live data arrives, update economic params
+  // When live data arrives (or refreshes), update economic params
   useEffect(() => {
-    if (!liveData || liveApplied) return;
-    setLiveApplied(true);
+    if (!liveData?.updatedAt || liveData.updatedAt === lastLiveTs) return;
+    setLastLiveTs(liveData.updatedAt);
     setInputs(prev => ({
       ...prev,
       monPrice: liveData.monPrice,
       networkStake: liveData.networkStake,
       activeValidators: liveData.activeValidators,
     }));
-    // Breakeven will auto-recalculate via the effect below
-  }, [liveData, liveApplied]);
+  }, [liveData, lastLiveTs]);
 
   // Auto-update stake to breakeven when economic params change
   useEffect(() => {
