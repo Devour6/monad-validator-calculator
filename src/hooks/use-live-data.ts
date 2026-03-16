@@ -14,11 +14,17 @@ export function useLiveData() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/live-data")
+    const controller = new AbortController();
+    fetch("/api/live-data", { signal: controller.signal })
       .then((res) => res.json())
       .then((json) => setData(json))
-      .catch(() => setData(null))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (!controller.signal.aborted) setData(null);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
   }, []);
 
   return { data, loading };

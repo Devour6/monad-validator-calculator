@@ -167,3 +167,12 @@ input[type="number"] {
   background: rgba(243, 238, 217, 0.2);
   color: #F3EED9;
 }
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

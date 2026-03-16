@@ -88,7 +88,10 @@ export function ValidatorTable({
               {COLUMNS.map(({ col, label, align }) => (
                 <th
                   key={col}
-                  className={`font-display text-[10px] font-normal uppercase tracking-[0.08em] text-cream-40 py-[14px] px-4 bg-dark border-b border-cream-8 whitespace-nowrap cursor-pointer select-none transition-colors hover:text-cream-60 ${
+                  role="button"
+                  tabIndex={0}
+                  aria-sort={sortCol === col ? (sortDir === "asc" ? "ascending" : "descending") : undefined}
+                  className={`font-display text-[10px] font-normal uppercase tracking-[0.08em] text-cream-40 py-[14px] px-4 bg-dark border-b border-cream-8 whitespace-nowrap cursor-pointer select-none transition-colors hover:text-cream-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cream-40 ${
                     align === "center"
                       ? "text-center w-[44px]"
                       : align === "right"
@@ -96,6 +99,7 @@ export function ValidatorTable({
                       : "text-left"
                   } ${sortCol === col ? "text-cream-60" : ""}`}
                   onClick={() => toggleSort(col)}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleSort(col); } }}
                 >
                   {label}{" "}
                   <span
@@ -114,10 +118,14 @@ export function ValidatorTable({
             </tr>
           </thead>
           <tbody>
+            {sorted.length === 0 && (
+              <tr><td colSpan={COLUMNS.length} className="py-8 text-center text-cream-20 text-sm font-body">No validators found</td></tr>
+            )}
             {sorted.map((d, j) => (
               <tr
                 key={d.name}
-                className={`cursor-pointer transition-all border-b border-cream-5 border-l-[3px] hover:bg-cream-5 opacity-0 animate-row-fade ${
+                tabIndex={0}
+                className={`cursor-pointer transition-all border-b border-cream-5 border-l-[3px] hover:bg-cream-5 focus-visible:bg-cream-5 focus-visible:outline-none opacity-0 animate-row-fade ${
                   d.name === selectedName
                     ? "bg-cream-8 border-l-phase-green"
                     : "border-l-transparent"
@@ -128,6 +136,7 @@ export function ValidatorTable({
                 onClick={() =>
                   onRowClick(d.name, d.totalStake, d.selfStake, d.commission)
                 }
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onRowClick(d.name, d.totalStake, d.selfStake, d.commission); } }}
               >
                 <td className="py-[11px] px-4 text-[11px] font-light text-cream-20 text-center">
                   {j + 1}

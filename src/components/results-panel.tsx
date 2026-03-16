@@ -23,7 +23,7 @@ export function ResultsPanel({ results }: ResultsPanelProps) {
         Profitability Estimate
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3" aria-live="polite">
         {/* Annual Revenue */}
         <div className="bg-cream-5 border border-cream-8 rounded-[10px] p-4 transition-colors hover:border-cream-12">
           <div className="font-display text-[9px] uppercase tracking-[0.1em] text-cream-40 mb-[6px] font-normal">
