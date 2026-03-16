@@ -107,6 +107,7 @@ export function CalculatorForm({
             id="commission"
             type="range"
             aria-label="Commission Rate"
+            aria-valuetext={`${inputs.commission}%`}
             className="flex-1"
             min={0}
             max={100}

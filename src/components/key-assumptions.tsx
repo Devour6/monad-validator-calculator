@@ -25,12 +25,19 @@ export function KeyAssumptions() {
       </h2>
 
       <table className="w-full border-collapse mt-2">
+        <caption className="sr-only">Key network assumptions</caption>
+        <thead className="sr-only">
+          <tr>
+            <th scope="col">Parameter</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
         <tbody>
           {ASSUMPTIONS.map((row) => (
             <tr key={row.label} className="border-b border-cream-5 last:border-0">
-              <td className="py-[9px] text-[13px] font-normal text-cream-40">
+              <th scope="row" className="py-[9px] text-[13px] font-normal text-cream-40 text-left">
                 {row.label}
-              </td>
+              </th>
               <td className="py-[9px] text-[13px] font-semibold text-cream-60 text-right">
                 {row.value}
               </td>

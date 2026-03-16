@@ -83,14 +83,15 @@ export function calculateValidatorProfit(
   priorityFees: number
 ): number {
   if (totalStake <= 0 || networkStake <= 0 || monPrice <= 0) return 0;
+  const clampedSelf = selfStake > totalStake ? totalStake : selfStake;
   const commission = commissionPct / 100;
   const networkShare = totalStake / networkStake;
   const blocksPerDay = BLOCKS_PER_DAY * networkShare;
   const dailyBlockRewards = blocksPerDay * BLOCK_REWARD;
-  const delegatedStake = Math.max(0, totalStake - selfStake);
+  const delegatedStake = Math.max(0, totalStake - clampedSelf);
   const delegatorShareOfRewards = dailyBlockRewards * (delegatedStake / totalStake);
   const dailyCommission = delegatorShareOfRewards * commission;
-  const dailySelfRewards = dailyBlockRewards * (selfStake / totalStake);
+  const dailySelfRewards = dailyBlockRewards * (clampedSelf / totalStake);
   const dailyTotalMon = dailyCommission + dailySelfRewards + priorityFees;
   const annualTotalMon = dailyTotalMon * 365;
   const annualRevenueUsd = annualTotalMon * monPrice;

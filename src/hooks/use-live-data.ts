@@ -15,6 +15,7 @@ export function useLiveData() {
 
   useEffect(() => {
     const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
     fetch("/api/live-data", { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -27,9 +28,10 @@ export function useLiveData() {
         setData(null);
       })
       .finally(() => {
+        clearTimeout(timeoutId);
         if (!controller.signal.aborted) setLoading(false);
       });
-    return () => controller.abort();
+    return () => { clearTimeout(timeoutId); controller.abort(); };
   }, []);
 
   return { data, loading };

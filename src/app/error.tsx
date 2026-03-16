@@ -18,7 +18,8 @@ export default function Error({
         </p>
         <button
           onClick={reset}
-          className="px-6 py-2.5 bg-cream-12 border border-cream-20 rounded-lg text-cream text-sm font-body font-medium hover:bg-cream-20 transition-colors"
+          className="px-6 py-2.5 bg-cream-12 border border-cream-20 rounded-lg text-cream text-sm font-body font-medium hover:bg-cream-20 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-cream-40"
+          aria-label="Try loading the calculator again"
         >
           Try again
         </button>

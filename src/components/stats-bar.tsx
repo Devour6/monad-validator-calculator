@@ -23,7 +23,7 @@ export function StatsBar({ inputs, liveData, loading }: StatsBarProps) {
     for (const v of VALIDATORS) {
       totalStaked += v.totalStake;
       totalComm += v.commission;
-      const ns = v.totalStake / inputs.networkStake;
+      const ns = inputs.networkStake > 0 ? v.totalStake / inputs.networkStake : 0;
       const bpd = BLOCKS_PER_DAY * ns;
       const dbr = bpd * BLOCK_REWARD;
       const apy = v.totalStake > 0 ? ((dbr * 365) / v.totalStake) * 100 : 0;
