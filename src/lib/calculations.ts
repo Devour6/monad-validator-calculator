@@ -123,7 +123,7 @@ export function calculateBreakevenStake(
   }
 
   const breakeven = (netDailyNeeded / K - selfStake * (1 - c)) / c;
-  return Math.max(Math.round(breakeven), selfStake);
+  return Math.max(Math.ceil(breakeven), selfStake);
 }
 
 // Verdict thresholds (USD)
@@ -131,7 +131,7 @@ const VERDICT_PROFITABLE = 1000;
 
 export function getVerdict(netProfitUsd: number): Verdict {
   if (netProfitUsd > VERDICT_PROFITABLE) return "profitable";
-  if (netProfitUsd > 0) return "marginal";
+  if (netProfitUsd >= 0) return "marginal";
   return "unprofitable";
 }
 
