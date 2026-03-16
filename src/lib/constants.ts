@@ -53,6 +53,6 @@ export const DEFAULT_INPUTS: CalculatorInputs = {
   networkStake: DEFAULT_TOTAL_STAKED,
   activeValidators: DEFAULT_ACTIVE_VALIDATORS,
   priorityFees: 0,
-  serverCost: 300,
-  otherCosts: 50,
+  serverCost: 550,
+  otherCosts: 0,
 };
