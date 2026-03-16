@@ -54,8 +54,8 @@ export function useCalculator(liveData?: LiveData | null) {
   );
 
   const verdict: Verdict = useMemo(
-    () => getVerdict(results.netProfitUsd),
-    [results.netProfitUsd]
+    () => isBreakeven ? "breakeven" : getVerdict(results.netProfitUsd),
+    [isBreakeven, results.netProfitUsd]
   );
 
   const updateInput = useCallback(

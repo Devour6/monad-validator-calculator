@@ -25,6 +25,12 @@ export function VerdictCard({ verdict, results }: VerdictCardProps) {
     detail = `Net ${fmtUsd(netProfitUsd)}/yr after ${fmtUsd(
       annualCostsUsd
     )} in operating costs. ~${fmtUsd(monthlyProfitUsd)}/mo net.`;
+  } else if (verdict === "breakeven") {
+    bgClass = "bg-yellow-dim";
+    borderClass = "border-phase-yellow/20";
+    barColor = "from-transparent via-phase-yellow to-transparent";
+    title = "Break Even";
+    detail = `Revenue covers ${fmtUsd(annualCostsUsd)} in annual operating costs with minimal margin. Increasing delegated stake or reducing costs would improve profitability.`;
   } else if (verdict === "marginal") {
     bgClass = "bg-yellow-dim";
     borderClass = "border-phase-yellow/20";

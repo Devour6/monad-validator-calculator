@@ -34,7 +34,7 @@ export interface CalculatorResults {
   grossApy: number;
 }
 
-export type Verdict = "profitable" | "marginal" | "unprofitable";
+export type Verdict = "profitable" | "marginal" | "breakeven" | "unprofitable";
 
 export type SortColumn =
   | "index"
