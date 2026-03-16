@@ -112,7 +112,7 @@ export function CalculatorForm({
             max={100}
             value={inputs.commission}
             onChange={(e) =>
-              updateInput("commission", parseFloat(e.target.value) || 0)
+              updateInput("commission", sanitize(e.target.value))
             }
           />
           <span className="min-w-[50px] text-right text-sm font-semibold text-cream">

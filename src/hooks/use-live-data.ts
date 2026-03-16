@@ -16,7 +16,10 @@ export function useLiveData() {
   useEffect(() => {
     const controller = new AbortController();
     fetch("/api/live-data", { signal: controller.signal })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((json) => setData(json))
       .catch((err) => {
         if (controller.signal.aborted) return;

@@ -56,6 +56,7 @@ export function ValidatorTable({
       {/* Search */}
       <div className="relative mb-[18px]">
         <svg
+          aria-hidden="true"
           className="absolute top-1/2 left-[14px] -translate-y-1/2 w-4 h-4 text-cream-40 pointer-events-none"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

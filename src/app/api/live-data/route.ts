@@ -33,7 +33,8 @@ export async function GET() {
       activeValidators: DEFAULT_ACTIVE_VALIDATORS,
       updatedAt: new Date().toISOString(),
     });
-  } catch {
+  } catch (err) {
+    console.error("Live data fetch error:", err instanceof Error ? err.message : String(err));
     return NextResponse.json({
       monPrice: DEFAULT_MON_PRICE,
       networkStake: DEFAULT_TOTAL_STAKED,
