@@ -119,12 +119,14 @@ export function ValidatorTable({
           </thead>
           <tbody>
             {sorted.length === 0 && (
-              <tr><td colSpan={COLUMNS.length} className="py-8 text-center text-cream-20 text-sm font-body">No validators found</td></tr>
+              <tr><td colSpan={COLUMNS.length} role="status" className="py-8 text-center text-cream-20 text-sm font-body">No validators found</td></tr>
             )}
             {sorted.map((d, j) => (
               <tr
                 key={d.name}
+                role="button"
                 tabIndex={0}
+                aria-label={`Select validator ${d.name}`}
                 className={`cursor-pointer transition-all border-b border-cream-5 border-l-[3px] hover:bg-cream-5 focus-visible:bg-cream-5 focus-visible:outline-none opacity-0 animate-row-fade ${
                   d.name === selectedName
                     ? "bg-cream-8 border-l-phase-green"

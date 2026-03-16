@@ -18,8 +18,10 @@ export function useLiveData() {
     fetch("/api/live-data", { signal: controller.signal })
       .then((res) => res.json())
       .then((json) => setData(json))
-      .catch(() => {
-        if (!controller.signal.aborted) setData(null);
+      .catch((err) => {
+        if (controller.signal.aborted) return;
+        console.error("Live data fetch failed:", err);
+        setData(null);
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);

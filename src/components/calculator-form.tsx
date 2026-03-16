@@ -10,6 +10,11 @@ interface CalculatorFormProps {
   applyPreset: (preset: PresetConfig) => void;
 }
 
+function sanitize(value: string, fallback = 0): number {
+  const raw = parseFloat(value);
+  return isFinite(raw) ? Math.max(0, raw) : fallback;
+}
+
 export function CalculatorForm({
   inputs,
   activePreset,
@@ -62,7 +67,7 @@ export function CalculatorForm({
           min={10000000}
           step={1000000}
           onChange={(e) =>
-            updateInput("stake", Math.max(0, parseFloat(e.target.value) || 0))
+            updateInput("stake", sanitize(e.target.value))
           }
         />
       </div>
@@ -84,7 +89,7 @@ export function CalculatorForm({
           min={100000}
           step={100000}
           onChange={(e) =>
-            updateInput("selfStake", Math.max(0, parseFloat(e.target.value) || 0))
+            updateInput("selfStake", sanitize(e.target.value))
           }
         />
       </div>
@@ -130,7 +135,7 @@ export function CalculatorForm({
           min={0.001}
           step={0.001}
           onChange={(e) =>
-            updateInput("monPrice", Math.max(0, parseFloat(e.target.value) || 0))
+            updateInput("monPrice", sanitize(e.target.value))
           }
         />
       </div>
@@ -157,7 +162,7 @@ export function CalculatorForm({
           min={100000000}
           step={100000000}
           onChange={(e) =>
-            updateInput("networkStake", Math.max(1, parseFloat(e.target.value) || 1))
+            updateInput("networkStake", sanitize(e.target.value, 1))
           }
         />
       </div>
@@ -176,7 +181,7 @@ export function CalculatorForm({
           min={1}
           max={200}
           onChange={(e) =>
-            updateInput("activeValidators", Math.max(1, parseFloat(e.target.value) || 1))
+            updateInput("activeValidators", sanitize(e.target.value, 1))
           }
         />
       </div>
@@ -198,7 +203,7 @@ export function CalculatorForm({
           min={0}
           step={100}
           onChange={(e) =>
-            updateInput("priorityFees", Math.max(0, parseFloat(e.target.value) || 0))
+            updateInput("priorityFees", sanitize(e.target.value))
           }
         />
       </div>
@@ -225,7 +230,7 @@ export function CalculatorForm({
           min={0}
           step={25}
           onChange={(e) =>
-            updateInput("serverCost", Math.max(0, parseFloat(e.target.value) || 0))
+            updateInput("serverCost", sanitize(e.target.value))
           }
         />
       </div>
@@ -247,7 +252,7 @@ export function CalculatorForm({
           min={0}
           step={10}
           onChange={(e) =>
-            updateInput("otherCosts", Math.max(0, parseFloat(e.target.value) || 0))
+            updateInput("otherCosts", sanitize(e.target.value))
           }
         />
       </div>

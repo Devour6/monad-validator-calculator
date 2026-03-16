@@ -23,7 +23,7 @@ export function ResultsPanel({ results }: ResultsPanelProps) {
         Profitability Estimate
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3" aria-live="polite">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Annual Revenue */}
         <div className="bg-cream-5 border border-cream-8 rounded-[10px] p-4 transition-colors hover:border-cream-12">
           <div className="font-display text-[9px] uppercase tracking-[0.1em] text-cream-40 mb-[6px] font-normal">
@@ -51,7 +51,7 @@ export function ResultsPanel({ results }: ResultsPanelProps) {
         </div>
 
         {/* Net Annual Profit - full width */}
-        <div className="col-span-2 bg-cream-5 border border-cream-8 rounded-[10px] p-4 transition-colors hover:border-cream-12">
+        <div className="col-span-2 bg-cream-5 border border-cream-8 rounded-[10px] p-4 transition-colors hover:border-cream-12" aria-live="polite" aria-atomic="true">
           <div className="font-display text-[9px] uppercase tracking-[0.1em] text-cream-40 mb-[6px] font-normal">
             Net Annual Profit
           </div>
