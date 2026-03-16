@@ -51,6 +51,7 @@ export function VerdictCard({ verdict, results }: VerdictCardProps) {
 
   return (
     <div
+      aria-live="polite"
       className={`mt-4 p-[22px] rounded-[14px] text-center transition-all relative overflow-hidden border ${bgClass} ${borderClass}`}
     >
       <div

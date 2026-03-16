@@ -169,7 +169,7 @@ export function ValidatorTable({
       </div>
 
       <p className="mt-[14px] text-[11px] text-cream-20 font-light leading-[1.5]">
-        On-chain data as of March 4, 2026. Click any row to load into
+        On-chain data — updates when live data is available. Click any row to load into
         calculator. Profit assumes default cost structure below.
       </p>
     </div>

@@ -219,7 +219,7 @@ export function CalculatorForm({
         <label htmlFor="serverCost" className="flex justify-between items-center text-[13px] text-cream-60 mb-[7px] font-normal">
           Monthly Server Cost (USD)
           <span className="text-[11px] text-cream-20 font-light">
-            Bare metal $200-$350
+            ~$583/mo ($7K/yr)
           </span>
         </label>
         <input
