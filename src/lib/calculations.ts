@@ -154,6 +154,7 @@ const PHASE_YELLOW: [number, number, number] = [250, 204, 21]; // #facc15
 const PHASE_GREEN: [number, number, number] = [74, 222, 128];  // #4ade80
 
 export function profitColor(profit: number): string {
+  if (!isFinite(profit)) return `rgb(${PHASE_YELLOW.join(",")})`;
   if (profit <= -2000) return `rgb(${PHASE_RED.join(",")})`;
   if (profit <= 0) {
     const t = (profit + 2000) / 2000;

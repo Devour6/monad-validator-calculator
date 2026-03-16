@@ -25,7 +25,10 @@ export async function GET() {
     }
 
     const priceData = await priceRes.json();
-    const monPrice = priceData?.monad?.usd ?? DEFAULT_MON_PRICE;
+    const rawPrice = priceData?.monad?.usd;
+    const monPrice = typeof rawPrice === 'number' && isFinite(rawPrice) && rawPrice > 0
+      ? rawPrice
+      : DEFAULT_MON_PRICE;
 
     return NextResponse.json({
       monPrice,

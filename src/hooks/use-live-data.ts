@@ -14,24 +14,33 @@ export function useLiveData() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);
+
     fetch("/api/live-data", { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
-      .then((json) => setData(json))
+      .then((json) => {
+        if (mounted) setData(json);
+      })
       .catch((err) => {
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted || !mounted) return;
         console.error("Live data fetch failed:", err);
-        setData(null);
+        if (mounted) setData(null);
       })
       .finally(() => {
         clearTimeout(timeoutId);
-        if (!controller.signal.aborted) setLoading(false);
+        if (mounted) setLoading(false);
       });
-    return () => { clearTimeout(timeoutId); controller.abort(); };
+
+    return () => {
+      mounted = false;
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
   }, []);
 
   return { data, loading };
